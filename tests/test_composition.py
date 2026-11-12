@@ -1,4 +1,5 @@
 from pptx import Presentation
+from pptx.enum.shapes import MSO_SHAPE_TYPE
 from pytest import approx
 from scientific_ppt.models import load_tokens
 from scientific_ppt.planner import plan
@@ -37,6 +38,10 @@ def test_continued_table_fills_nonfinal_pages_and_preserves_topic_boundary():
         bottom = tokens['canvas']['height']-tokens['spacing']['footer']
         assert [(table.top+table.height)/12700 for table in tables[:-1]] == approx([bottom]*(len(tables)-1),abs=.01)
         assert (tables[-1].top+tables[-1].height)/12700 < bottom
+        for shape in tables:
+            for cell in shape.table.iter_cells():
+                runs = [run for paragraph in cell.text_frame.paragraphs for run in paragraph.runs if run.text]
+                assert runs and all(run.font.bold for run in runs)
 
 
 def test_editorial_styles_remain_editable(tmp_path):
@@ -57,6 +62,7 @@ def test_editorial_styles_remain_editable(tmp_path):
     assert any(r.text=='underlined' and r.font.underline for r in runs)
     tab=next(s.table for s in slide.shapes if s.has_table)
     assert len(tab.rows)==1
+    assert tab.cell(0,1).text_frame.paragraphs[0].runs[0].font.bold is True
     ns={'a':'http://schemas.openxmlformats.org/drawingml/2006/main'}
     assert tab.cell(0,0)._tc.find('a:tcPr/a:noFill',ns) is not None
     assert tab.cell(0,0)._tc.find('a:tcPr/a:lnR/a:noFill',ns) is not None
@@ -66,17 +72,28 @@ def test_editorial_styles_remain_editable(tmp_path):
 def test_composed_text_formula_and_panel(tmp_path):
     deck = {'version': '1.0', 'title': 'Composition', 'slides': [{
         'title': 'Composition', 'layout': 'composed', 'blocks': [
-            {'type': 'text', 'text': 'An **important** result', 'panel': 'gradient', 'box': [24, 80, 672, 90]},
-            {'type': 'equation', 'latex': 'x^2', 'box': [24, 200, 672, 120], 'caption': '(1)'}
+            {'type': 'text', 'text': 'An ==important== result with @@limits@@', 'panel': 'gradient', 'box': [24, 80, 672, 90]},
+            {'type': 'text', 'text': 'Bibliographic text', 'bold': False, 'box': [24, 450, 672, 50]},
+            {'type': 'equation', 'latex': 'x^2', 'box': [24, 200, 672, 120], 'caption': '(1)'},
+            {'type': 'equation', 'latex': 'y^2', 'box': [24, 330, 672, 110], 'caption': 'Squared response in the original units'}
         ]}]}
     tokens = load_tokens()
     pages = plan(deck, tokens, tmp_path, tmp_path/'assets')
-    assert len(pages) == 1 and len(pages[0].elements) == 2
+    assert len(pages) == 1 and len(pages[0].elements) == 4
     output = tmp_path/'composition.pptx'
     write_pptx(deck, pages, tokens, output)
     slide = Presentation(output).slides[0]
     panel = next(s for s in slide.shapes if s.has_text_frame and 'important' in s.text)
-    assert '**' not in panel.text
-    assert any(r.text == 'important' and r.font.bold for p in panel.text_frame.paragraphs for r in p.runs)
+    assert panel.text == 'An important result with limits'
+    runs = {r.text: r.font for r in panel.text_frame.paragraphs[0].runs}
+    assert all(font.bold for font in runs.values())
+    assert str(runs['important'].color.rgb) == tokens['colors']['blue']
+    assert str(runs['limits'].color.rgb) == tokens['colors']['primary']
+    reference = next(s for s in slide.shapes if s.has_text_frame and s.text == 'Bibliographic text')
+    assert reference.text_frame.paragraphs[0].runs[0].font.bold is False
     assert 'gradFill' in panel._element.xml
     assert 'LaTeX: x^2' in slide.notes_slide.notes_text_frame.text
+    equations = [shape for shape in slide.shapes if shape.shape_type == MSO_SHAPE_TYPE.PICTURE]
+    labels = {shape.text: shape for shape in slide.shapes if shape.has_text_frame}
+    assert labels['(1)'].left > equations[0].left + equations[0].width
+    assert labels['Squared response in the original units'].top > equations[1].top + equations[1].height

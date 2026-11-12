@@ -79,6 +79,9 @@
                     "heading": {
                       "type": "boolean"
                     },
+                    "bold": {
+                      "type": "boolean"
+                    },
                     "font_size": {
                       "type": "number",
                       "minimum": 16,

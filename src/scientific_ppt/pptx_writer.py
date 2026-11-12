@@ -1,6 +1,7 @@
 """Editable PowerPoint primitives; all coordinates are points."""
 import json
 from pathlib import Path
+import re
 from pptx import Presentation
 from pptx.util import Pt
 from pptx.dml.color import RGBColor
@@ -10,7 +11,7 @@ from pptx.oxml.xmlchemy import OxmlElement
 from .models import Box
 from .tables import TABLE_CAPTION_HEIGHT
 from .layout import content_box
-from .typography import resolve_font
+from .typography import resolve_font, width as text_width
 from .images import fit_image
 
 
@@ -47,15 +48,16 @@ def set_text(shape,text,size,tokens,fill=None,bold=False,align=PP_ALIGN.LEFT,pad
             bc=OxmlElement('a:buClr');rgb=OxmlElement('a:srgbClr');rgb.set('val',bullet.get('color',tokens['colors']['text']));bc.append(rgb);paragraph_props.append(bc)
             bf=OxmlElement('a:buFont');bf.set('typeface','Arial');paragraph_props.append(bf)
             char=OxmlElement('a:buChar');char.set('char',bullet['symbol']);paragraph_props.append(char)
-        import re
-        for part in re.split(r'(\*\*.*?\*\*|==.*?==|__.*?__)', line):
+        for part in re.split(r'(\*\*.*?\*\*|==.*?==|@@.*?@@|__.*?__)', line):
             strong = part.startswith('**') and part.endswith('**')
             blue=part.startswith('==') and part.endswith('==')
+            red=part.startswith('@@') and part.endswith('@@')
             underline=part.startswith('__') and part.endswith('__')
-            r=p.add_run();r.text=part[2:-2] if strong or blue or underline else part
+            r=p.add_run();r.text=part[2:-2] if strong or blue or red or underline else part
             r.font.size=Pt(size);r.font.name=latin;r.font.bold=bold or strong
             r.font.underline=underline
-            r.font.color.rgb=color(tokens['colors']['blue'] if blue else (fill or tokens['colors']['text']))
+            keyword_color='blue' if blue else 'primary' if red else None
+            r.font.color.rgb=color(tokens['colors'][keyword_color] if keyword_color else (fill or tokens['colors']['text']))
             props=r._r.get_or_add_rPr()
             props.set('lang','zh-CN' if any('\u3400'<=c<='\u9fff' for c in part) else 'en-US')
             ea=OxmlElement('a:ea');ea.set('typeface',family);props.append(ea)
@@ -112,21 +114,26 @@ def write_pptx(deck,pages,tokens,output):
                             x,y=spec.get('focus',[.5,.5]);rect=OxmlElement('a:fillToRect')
                             for key,value in [('l',x),('t',y),('r',1-x),('b',1-y)]:rect.set(key,str(round(value*100000)))
                             path.append(rect);grad.append(path)
-                set_text(shape,b['text'],size,tokens,fill=colors.get(b.get('emphasis'),colors['text']),bold=b.get('heading',False),family=tokens['fonts']['heading'] if b.get('heading') else None,align=PP_ALIGN.CENTER if b.get('align')=='center' else PP_ALIGN.LEFT,first_line_indent=b.get('first_line_indent',0),paragraph_space=b.get('paragraph_space',0),bullet=b.get('bullet'))
-                item['text']=b['text'].replace('**','').replace('==','').replace('__','');item['font_size']=size
+                heading=b.get('heading',False)
+                bold=b.get('bold',heading or page.layout not in ('cover','end'))
+                set_text(shape,b['text'],size,tokens,fill=colors.get(b.get('emphasis'),colors['text']),bold=bold,family=tokens['fonts']['heading'] if heading else None,align=PP_ALIGN.CENTER if b.get('align')=='center' else PP_ALIGN.LEFT,first_line_indent=b.get('first_line_indent',0),paragraph_space=b.get('paragraph_space',0),bullet=b.get('bullet'))
+                item['text']=shape.text;item['font_size']=size
             elif kind in ('image','equation'):
                 if kind=='equation':
                     source=b['_equation']['png'];size=b['_equation']['size_px'];notes.append('LaTeX: '+b['latex'])
                     item['latex']=b['latex']
                 else:source=b['_path'];size=b['_size']
-                cap_h=38 if b.get('caption') else 0
-                if kind=='equation':
-                    cap_h=0
+                caption=b.get('caption','')
+                equation_number=kind=='equation' and re.fullmatch(
+                    r'(?:\d+|[(（]\s*\d+(?:[.-]\d+)*[a-zA-Z]?\s*[)）])',caption.strip())
+                caption_size=tokens['type']['caption']
+                cap_h=38 if caption and not equation_number else 0
                 frame=Box(box.x,box.y,box.w,box.h-cap_h)
                 # Formulae are set at their natural point size and are never stretched to fill a slide.
                 if kind=='equation':
-                    if b.get('caption'):
-                        frame.w-=56
+                    if equation_number:
+                        number_width=max(52,text_width(caption,caption_size,tokens['fonts']['body'])+16)
+                        frame.w-=number_width+4
                     nw,nh=b['_equation']['size_pt'];scale=min(1,frame.w/nw,frame.h/nh)
                     frame=Box(frame.x+(frame.w-nw*scale)/2,frame.y+(frame.h-nh*scale)/2,nw*scale,nh*scale)
                 fitted,mode,warning=fit_image(size,frame,b.get('fit','contain'),b.get('allow_crop',False),tokens['quality']['max_image_crop'])
@@ -141,9 +148,9 @@ def write_pptx(deck,pages,tokens,output):
                     else:pic.crop_top=pic.crop_bottom=(1-ratio/target)/2
                 pic._element.nvPicPr.cNvPr.set('descr',b.get('alt',b.get('latex',b.get('caption',''))))
                 item.update(actual_box=fitted.as_list(),source_size=size,fit=mode)
-                if kind=='equation' and b.get('caption'):
-                    text_box(slide,b['caption'],Box(box.x+box.w-52,box.y+box.h/2-17,52,34),tokens['type']['caption'],tokens,align=PP_ALIGN.RIGHT,padding=0)
-                if cap_h:text_box(slide,b['caption'],Box(box.x,min(box.y+box.h-cap_h+4,fitted.y+fitted.h+6),box.w,cap_h-4),tokens['type']['caption'],tokens,fill=colors['text'],align=PP_ALIGN.CENTER,padding=0)
+                if equation_number:
+                    text_box(slide,caption,Box(box.x+box.w-number_width,box.y+box.h/2-17,number_width,34),caption_size,tokens,align=PP_ALIGN.RIGHT,padding=0)
+                if cap_h:text_box(slide,caption,Box(box.x,min(box.y+box.h-cap_h+4,fitted.y+fitted.h+6),box.w,cap_h-4),caption_size,tokens,fill=colors['text'],align=PP_ALIGN.CENTER,padding=0)
             elif kind=='table':
                 table_y=box.y+TABLE_CAPTION_HEIGHT if b.get('caption') else box.y
                 style=b.get('style','grid')
@@ -158,7 +165,7 @@ def write_pptx(deck,pages,tokens,output):
                         if style in ('bands','underline','borderless'):cell.fill.background()
                         align=PP_ALIGN.CENTER
                         if style in ('underline','borderless'):align=PP_ALIGN.RIGHT if c==0 else PP_ALIGN.LEFT
-                        set_text(cell,value,tokens['type']['table'],tokens,bold=r==0 and not b.get('hide_header'),padding=4,align=align)
+                        set_text(cell,value,tokens['type']['table'],tokens,bold=True,padding=4,align=align)
                         cell.vertical_anchor=MSO_ANCHOR.MIDDLE
                         props=cell._tc.get_or_add_tcPr()
                         for edge_index,edge in enumerate(('lnL','lnR','lnT','lnB')):

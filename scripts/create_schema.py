@@ -14,7 +14,7 @@ def block(kind, props, required):
     return obj({'type':{'const':kind},'id':NONEMPTY,'source':S,'box':{'type':'array','items':NUM,'minItems':4,'maxItems':4},**props},['type',*required])
 
 blocks = [
-    block('text',{'text':NONEMPTY,'emphasis':{'enum':['normal','blue','primary']},'heading':{'type':'boolean'}},['text']),
+    block('text',{'text':NONEMPTY,'emphasis':{'enum':['normal','blue','primary']},'heading':{'type':'boolean'},'bold':{'type':'boolean'}},['text']),
     block('image',{'path':NONEMPTY,'caption':S,'fit':{'enum':['contain','cover']},'allow_crop':{'type':'boolean'},'alt':S},['path']),
     block('equation',{'latex':NONEMPTY,'caption':S},['latex']),
     block('table',{'columns':array(NONEMPTY,1),'rows':array(obj({'id':NONEMPTY,'cells':array(S,1),'group':S},['id','cells']),1),'widths':array(POS,1),'caption':S},['columns','rows']),

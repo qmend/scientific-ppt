@@ -1,11 +1,49 @@
 """Create the composed Transformer example using the scientific-ppt schema."""
 import json
+import os
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'artifacts/my-transformer-v3'
 OUT.mkdir(parents=True, exist_ok=True)
+os.environ.setdefault('MPLCONFIGDIR', str(ROOT / '.cache' / 'matplotlib'))
+sys.path.insert(0, str(ROOT / 'src'))
+
+from matplotlib.figure import Figure
+from matplotlib.font_manager import FontProperties
+from matplotlib.patches import Rectangle
+from scientific_ppt.typography import resolve_font
+
 SOURCE = 'Vaswani et al., Attention Is All You Need, NeurIPS 30, 2017. https://arxiv.org/abs/1706.03762'
+
+
+def draw_causal_mask(path):
+    """Draw the four-token causal visibility matrix used in the example."""
+    figure = Figure(figsize=(5.4, 5.4), dpi=190, facecolor='#F7F7F7')
+    axis = figure.add_axes([.205, .11, .72, .72])
+    font = FontProperties(fname=resolve_font('SimSun')[0], size=17)
+    positions = range(4)
+    for query in positions:
+        for key in positions:
+            visible = key <= query
+            axis.add_patch(Rectangle((key, query), 1, 1,
+                                     facecolor='#CCFFFF' if visible else '#E5E5E5',
+                                     edgecolor='white', linewidth=2))
+            axis.text(key + .5, query + .5, '可见' if visible else '屏蔽',
+                      color='#161616' if visible else '#606060', fontproperties=font,
+                      ha='center', va='center')
+    axis.set(xlim=(0, 4), ylim=(4, 0), aspect='equal')
+    for ticks in (axis.set_xticks, axis.set_yticks):
+        ticks([index + .5 for index in positions], [str(index + 1) for index in positions])
+    axis.xaxis.tick_top()
+    axis.xaxis.set_label_position('top')
+    axis.set_xlabel('键位置', fontproperties=font, labelpad=8)
+    axis.set_ylabel('查询位置', fontproperties=font, labelpad=8)
+    axis.tick_params(length=0, labelsize=15, pad=5)
+    for spine in axis.spines.values():
+        spine.set_visible(False)
+    figure.savefig(path)
 
 
 def text(value, box, size=22, heading=False, panel=None, align='left'):
@@ -104,7 +142,7 @@ page('多头注意力与张量维度', [
     text('拼接与融合\n• 8 个头拼接为 **512** 维。\n• 输出投影混合各头信息。\n• 各头可学习不同的匹配模式。',[370,333,326,170],20,False,'gradient')
 ], notes='式（5）中 h_i 表示 head_i。以自注意力和 Base 配置为例。'),
 page('因果掩码与三种注意力', [
-    dict(type='image',path='../my-transformer/causal-mask.png',box=[24,81,320,325],caption='图 3  因果注意力可见区域'),
+    dict(type='image',path='causal-mask.png',box=[24,81,320,325],caption='图 3  因果注意力可见区域'),
     text('逐行理解可见范围', [362,85,334,42],24,True,'gradient'),
     text('• **行**是查询，**列**是键。\n\n• 查询 3 读取键 1 至 3。\n\n• 未来位置先加负无穷，归一化后权重为零。',[362,142,334,216],22),
     text('目标输入已右移。因此，对角线位置对应的是当前已知输入，预测仍只依赖此前目标词元。',[24,420,672,84],22,False,'outline')
@@ -222,33 +260,11 @@ for si,s in enumerate(slides):
     if s['title']=='Q、K、V 如何产生注意力':
         s['blocks'][2]['text']=s['blocks'][2]['text'].replace('**Q（查询）**','==Q（查询）==')
 
-import shutil
-shutil.copy2(ROOT/'artifacts/my-transformer/causal-mask.png',OUT/'causal-mask.png')
-for s in slides:
-    for b in s['blocks']:
-        if b['type']=='image':b['path']='causal-mask.png'
+draw_causal_mask(OUT/'causal-mask.png')
 (OUT/'deck.json').write_text(json.dumps(dict(version='1.0',title='Transformer 架构原理与计算过程',english_title='TRANSFORMER  /  ATTENTION IS ALL YOU NEED',language='zh-CN',slides=slides),ensure_ascii=False,indent=2),encoding='utf-8')
 tokens=json.loads((ROOT/'references/design_tokens.json').read_text(encoding='utf-8'))
 tokens['type'].update(node=16,body=22,title=30)
 tokens['spacing']['line_height']=1.12
 (OUT/'tokens.json').write_text(json.dumps(tokens,ensure_ascii=False,indent=2),encoding='utf-8')
 
-# Optional draw.io source generated from the same graph, independent of PPT rendering.
-try:
-    import drawpyo
-except ImportError:
-    print('drawpyo unavailable; native PPT diagram remains available')
-else:
-    file=drawpyo.File()
-    file.file_path=str(OUT)
-    file.file_name='transformer-architecture.drawio'
-    canvas=drawpyo.Page(file=file)
-    objects={}
-    for item in nodes:
-        x,y,w,h=item['box']
-        obj=drawpyo.diagram.Object(page=canvas,value=item['label'],position=(x,y),width=w,height=h)
-        objects[item['id']]=obj
-    for item in edges:
-        drawpyo.diagram.Edge(page=canvas,source=objects[item['from']],target=objects[item['to']],waypoints='orthogonal')
-    file.write()
 print(OUT/'deck.json')

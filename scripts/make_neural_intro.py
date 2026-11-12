@@ -281,42 +281,6 @@ tokens['type'].update(title=30,body=22,node=16,table=18)
 tokens['spacing']['line_height']=1.12
 (OUT/'tokens.json').write_text(json.dumps(tokens,ensure_ascii=False,indent=2),encoding='utf-8')
 
-# Keep the editable draw.io counterparts on one tab per diagram.
-try:
-    import drawpyo
-except ImportError:
-    print('drawpyo unavailable; PowerPoint diagrams will still be generated')
-else:
-    source_file = drawpyo.File(file_name='diagrams.drawio', file_path=str(OUT))
-    for block in (neuron, mlp, backprop, pipeline, cnn, residual):
-        diagram_page = drawpyo.Page(file=source_file, name=block['caption'], width=720, height=390)
-        objects = {}
-        boxes = {}
-        for spec in block['nodes']:
-            x, y, width, height = spec['box']
-            boxes[spec['id']] = spec['box']
-            objects[spec['id']] = drawpyo.diagram.Object(
-                page=diagram_page, value=spec['label'].replace('\n', '<br>'),
-                position=(x+20, y+20), width=width, height=height,
-                baseStyle='ellipse' if spec['kind']=='neuron' else None,
-                fillColor='#'+tokens['colors'][spec['color']], strokeColor='#161616',
-            )
-        for spec in block['edges']:
-            route = spec.get('route')
-            anchors = {}
-            if route:
-                for key, point, prefix in (('from', route[0], 'exit'), ('to', route[-1], 'entry')):
-                    x, y, width, height = boxes[spec[key]]
-                    anchors[prefix+'X'] = (point[0]-x)/width
-                    anchors[prefix+'Y'] = (point[1]-y)/height
-            connector = drawpyo.diagram.Edge(
-                page=diagram_page, source=objects[spec['from']], target=objects[spec['to']],
-                waypoints=None, line_end_target='classic', endFill_target=True, **anchors,
-            )
-            for x, y in (route or [])[1:-1]:
-                connector.add_point(x+20, y+20)
-    source_file.write()
-
 print(f'{len(slides)} source slides; long tables will paginate automatically')
 print(f'XOR: initial loss={history[0]["loss"]:.6f}, final loss={loss:.6f}, all 4 training predictions correct')
 print(OUT/'deck.json')

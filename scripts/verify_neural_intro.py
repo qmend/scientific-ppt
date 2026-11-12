@@ -1,7 +1,6 @@
 """Verify the rendered lecture and data conservation in the exported PPTX."""
 import json
 from pathlib import Path
-from xml.etree import ElementTree as ET
 import numpy as np
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE
@@ -88,13 +87,6 @@ flowchart_boxes=[
 ]
 assert len(flowchart_boxes)==31
 assert all(str(box.fill.fore_color.rgb)=='FFFFFF' for box in flowchart_boxes)
-drawio_path=out/'diagrams.drawio'
-if drawio_path.is_file():
-    drawio=ET.parse(drawio_path).getroot()
-    diagrams=drawio.findall('diagram')
-    assert len(diagrams)==6
-    assert len(drawio.findall('.//mxCell[@vertex="1"]'))==nodes
-    assert drawio.findall('.//Array[@as="points"]/mxPoint')
 summary=dict(pages=len(prs.slides),rendered=qa['rendered_count'],issues=qa['issues'],
              long_tables=long_tables,native_charts=charts,native_diagram_nodes=nodes,
              xor_loss=loss,pptx_sha256=qa['pptx_sha256'])

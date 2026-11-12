@@ -16,7 +16,7 @@ python -m venv .venv
 .venv/Scripts/python scripts/scientific_ppt.py build examples/demo.json --output artifacts/my-demo --strict
 ```
 
-Linux/macOS把解释器路径换为`.venv/bin/python`。初始环境、可选Office依赖与锁定策略见[安装说明](references/installation.md)。实际渲染需要本机PowerPoint或LibreOffice之一；生成PPTX本身不需要Office、draw.io或TeX。
+Linux/macOS把解释器路径换为`.venv/bin/python`。环境与可选依赖见[安装说明](references/installation.md)。计算机示意图优先用 Drawlib，专业科学图按[图件用途](references/figure_tools.md)选库。PPTX 可直接生成，预览可用本机 PowerPoint 或 LibreOffice 渲染。
 
 将完整的 Skill 源码目录复制到 Agent 的 skills 路径，目录名为 `scientific-ppt`。按上面的步骤安装依赖后，直接运行 `scripts/scientific_ppt.py`。示例请求：
 
@@ -58,4 +58,4 @@ Linux/macOS把解释器路径换为`.venv/bin/python`。初始环境、可选Off
 
 代码采用[MIT许可证](LICENSE)。发布前按[许可与第三方说明](THIRD_PARTY_NOTICES.md)确认素材权利。参考教材的转换副本和预览默认被Git忽略；不把素材版权随代码许可证一并授权。
 
-`.venv/`、缓存、临时尝试和参考副本不提交。保留示例最终PPTX、PDF、预览、输入JSON与验收记录。项目不会自动上传GitHub。
+仓库中的示例输入和素材位于 `examples/`。生成的 PPTX、PDF、预览和验收报告保存在本地 `artifacts/`，整个目录由 Git 忽略。

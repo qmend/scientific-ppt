@@ -23,5 +23,6 @@ Thumbs.db
 *.tmp
 ~$*
 
-# Local generated artifacts
+# Local reference inputs and generated artifacts
+/material/
 /artifacts/

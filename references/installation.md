@@ -26,8 +26,21 @@ python3 -m venv .venv
 
 默认中文SimSun、西文Times New Roman。Windows检测Fonts目录；Linux/macOS尝试`fc-match`。可用`SCIENTIFIC_PPT_FONT_PATH`指定合法TTF/TTC文件，但其字体族名称仍应在自定义tokens中同步设定。项目不分发商业字体。
 
+## 可选绘图库
+
+根据[图件用途](figure_tools.md)启用对应工具。Drawlib 默认用于计算机示意图，作为独立绘图环境运行。以下命令在仓库根目录执行：
+
+```powershell
+.venv/Scripts/python -m venv .cache/drawlib-preview-venv
+.cache/drawlib-preview-venv/Scripts/python -m pip install -r requirements-drawlib.lock
+.cache/drawlib-preview-venv/Scripts/python -m pip check
+.cache/drawlib-preview-venv/Scripts/python scripts/make_drawlib_chatgpt_architecture.py
+```
+
+首次使用 Phosphor 图标时，Drawlib 会从其官方 GitHub Release 下载资源到本地缓存。示例输出位于 `artifacts/drawlib-chatgpt/`。在其它平台可切换为 `bin/python` 并通过 `--font` 和 `--bold-font` 提供本地中文字体路径。
+
 ## 目录与清理
 
 用户输出指定在`--output`目录。每轮尝试在`attempt-N/`，最终PPTX、PDF、previews和qa_report在输出根目录；不要把旧attempt当作最终结果。参考转换保存在被忽略的`artifacts/reference-analysis/`。
 
-锁文件与pyproject、SKILL、src、scripts、references、tests、examples及最终demo产物应一起发布。源代码仓库无外部下载的字体、参考图片和教材副本。
+发布内容包括锁文件、pyproject、SKILL、src、scripts、references、tests 和 examples。`artifacts/` 是 Git 忽略的本地生成目录。源代码仓库无外部下载的字体、参考图片和教材副本。

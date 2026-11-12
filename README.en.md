@@ -19,7 +19,7 @@ python -m venv .venv
 .venv/bin/python -m pytest
 ```
 
-See [installation](references/installation.md) for optional Office support and lock-file scope. PowerPoint or LibreOffice is required for actual PPT rendering, but neither is required to generate an editable PPTX. No draw.io, TeX distribution, model API key or Node runtime is required.
+See [installation](references/installation.md) for optional dependencies. Drawlib is the default for computer science schematics. Choose specialist libraries by [figure type](references/figure_tools.md). The Skill generates editable PPTX files directly and uses PowerPoint or LibreOffice to render slide previews.
 
 Copy the complete Skill source directory into your Agent's skills directory as `scientific-ppt`. Install the locked dependencies and run `scripts/scientific_ppt.py` directly. `SKILL.md` defines the Agent workflow, and `references/` contains the detailed specifications.
 

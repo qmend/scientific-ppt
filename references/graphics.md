@@ -2,7 +2,7 @@
 
 ## 科研图
 
-结构图和流程图优先用 draw.io 或 Python 绘制，数据图优先使用 Python 计算并生成。需要在 PowerPoint 中编辑时，可从同一份图数据生成原生对象。外部图片用于真实照片或必须保留原样的素材。
+计算机示意图优先使用 Drawlib。按每张图的数据和表达任务选择工具，见[科研图选库规则](figure_tools.md)。需要在 PowerPoint 中编辑时，可从同一份图数据生成原生对象。外部图片用于真实照片或必须保留原样的素材。
 
 使用原生PowerPoint节点和连接线，可用于网络层、系统模块、流程、技术路线和多阶段Pipeline。流程图方框默认白底，网络图的圆形节点可按层着色。默认DAG按最长前向路径分层。反馈边必须显式标记。自动布局优先可读尺寸，过密时抛出LayoutError，保留输入由Agent拆为概览和细节。
 
@@ -10,9 +10,9 @@
 
 图片处理读取EXIF方向，并等比例放置。SVG通过resvg转为PNG，原始SVG仍作为源资源。低分辨率源图片不能通过放大获得真实细节。科学图应尽量提供矢量源或高分辨率原图。
 
-## 公式
+计算机架构图的 Drawlib 示例及复现命令见[可选绘图库](installation.md#可选绘图库)。已有论文配图示例仍可用 `.venv/Scripts/python scripts/make_figure_showcase.py` 生成 SVG 和 PNG。
 
-可选 draw.io 源文件导出使用 drawpyo 0.2.5。执行 `.venv/Scripts/python -m pip install -r requirements-drawio.lock` 安装。修订示例脚本会检测该模块，存在时生成 `.drawio` 文件，缺失时继续生成原生 PPT 图。drawpyo 负责生成可编辑 XML，PPT 中的图仍由原生形状和折线绘制。draw.io 文件在本机已生成并检查 XML，尚未在 draw.io GUI 中检查其自动连线路由。
+## 公式
 
 图题居中放在图下，表题居中放在表上，默认18pt黑色。公式编号放在公式右侧。解释与符号含义使用正文说明。
 
@@ -22,4 +22,4 @@
 
 不是完整TeX发行版，宏包、自定义宏、文件输入和shell命令不支持。未知命令报错。复杂多层括号或罕见符号需在预览中逐个确认。当前输出公式是清晰图像，**不是Office原生可编辑公式**；用户可编辑保留的LaTeX后重新生成。
 
-缺少核心公式依赖会在安装/运行时报错；这些是轻量Python核心依赖，不冒充可选。外部Office、LibreOffice、TeX、draw.io均非PPTX生成强制依赖。
+公式模块使用核心 Python 依赖，可直接生成可嵌入 PPTX 的公式图片。Office 和 LibreOffice 可用于渲染预览。
