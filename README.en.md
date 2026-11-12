@@ -22,8 +22,24 @@
     <td width="50%"><img src="examples/previews/slide-004.png" alt="4 Selective copying" width="100%"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-027.png" alt="27 Evaluation and deployment" width="100%"></td>
-    <td width="50%"><img src="examples/previews/slide-028.png" alt="28 Core mechanisms" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-007.png" alt="7 Convolution with fixed parameters" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-008.png" alt="8 Input-dependent selective state updates" width="100%"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="examples/previews/slide-010.png" alt="10 Data flow in a Mamba block" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-011.png" alt="11 Tensor shapes table" width="100%"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="examples/previews/slide-012.png" alt="12 Tensor shapes table continued" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-013.png" alt="13 Tensor shapes table final page" width="100%"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="examples/previews/slide-020.png" alt="20 Selective copying results" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-024.png" alt="24 Interpreting the induction task" width="100%"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="examples/previews/slide-025.png" alt="25 Language-model ablation" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-026.png" alt="26 Training memory by batch size" width="100%"></td>
   </tr>
   <tr>
     <td width="50%"><img src="examples/previews/slide-029.png" alt="29 References" width="100%"></td>

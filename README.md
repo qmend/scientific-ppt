@@ -22,8 +22,24 @@
     <td width="50%"><img src="examples/previews/slide-004.png" alt="4 选择性复制任务" width="100%"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-027.png" alt="27 语言任务与部署评估" width="100%"></td>
-    <td width="50%"><img src="examples/previews/slide-028.png" alt="28 三个核心机制" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-007.png" alt="7 固定参数时的卷积形式" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-008.png" alt="8 输入依赖的选择性状态更新" width="100%"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="examples/previews/slide-010.png" alt="10 Mamba 块的数据流" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-011.png" alt="11 张量形状表首页" width="100%"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="examples/previews/slide-012.png" alt="12 张量形状表续页" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-013.png" alt="13 张量形状表末页" width="100%"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="examples/previews/slide-020.png" alt="20 选择性复制的对照结果" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-024.png" alt="24 如何解读归纳头任务" width="100%"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="examples/previews/slide-025.png" alt="25 选择参数的语言模型消融" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-026.png" alt="26 训练显存随批大小的变化" width="100%"></td>
   </tr>
   <tr>
     <td width="50%"><img src="examples/previews/slide-029.png" alt="29 参考文献" width="100%"></td>
