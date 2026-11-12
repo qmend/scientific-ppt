@@ -1,0 +1,34 @@
+# Optional standalone environment for Drawlib figures. Verified on Python 3.11 / Windows.
+annotated-doc==0.0.6
+annotated-types==0.8.0
+colorama==0.4.6 ; sys_platform == "win32"
+contourpy==1.3.3
+cycler==0.12.1
+drawlib==0.3.9
+fonttools==4.68.0
+greenlet==3.5.6
+jinja2==3.1.6
+kiwisolver==1.5.1
+lxml==6.1.3
+markdown-it-py==4.3.0
+markupsafe==3.0.4
+matplotlib==3.11.2
+mdurl==0.1.2
+numpy==2.4.6
+packaging==26.3
+pillow==13.0.0
+playwright==1.65.1
+pydantic==2.14.3
+pydantic-core==2.50.4
+pygments==2.21.0
+pyparsing==3.3.3
+python-dateutil==4.0.0
+python-docx==1.2.0
+python-pptx==1.0.2
+rich==15.0.0
+shellingham==1.5.4
+typer==0.29.1
+typing-extensions==4.16.0
+typing-inspection==0.4.5
+tzdata==2026.6
+xlsxwriter==3.3.1
