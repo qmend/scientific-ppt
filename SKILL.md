@@ -21,8 +21,8 @@ Create a coherent presentation from the user's evidence and purpose. This Skill 
    Windows (from the Skill directory):
    ```powershell
    .venv/Scripts/python scripts/scientific_ppt.py doctor
-   .venv/Scripts/python scripts/scientific_ppt.py validate examples/demo.json
-   .venv/Scripts/python scripts/scientific_ppt.py build examples/demo.json --output artifacts/my-deck --strict
+   .venv/Scripts/python scripts/scientific_ppt.py validate tests/fixtures/demo/demo.json
+   .venv/Scripts/python scripts/scientific_ppt.py build tests/fixtures/demo/demo.json --output artifacts/my-deck --strict
    ```
    Linux/macOS: replace `.venv/Scripts/python` with `.venv/bin/python`.
 

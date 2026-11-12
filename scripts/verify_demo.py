@@ -12,7 +12,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def verify():
     out=ROOT/'artifacts/demo'
-    source=json.loads((ROOT/'examples/demo.json').read_text(encoding='utf-8'))
+    source=json.loads((ROOT/'tests/fixtures/demo/demo.json').read_text(encoding='utf-8'))
     report=json.loads((out/'qa_report.json').read_text(encoding='utf-8'))
     layout=json.loads((out/'resolved_layout.json').read_text(encoding='utf-8'))
     prs=Presentation(out/'presentation.pptx')

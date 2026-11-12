@@ -32,7 +32,7 @@ README 示例通过 PowerPoint 严格构建，实际渲染 19 页。完整性脚
 
 ```powershell
 .venv/Scripts/python -m pytest -q --junitxml=artifacts/pytest.xml
-.venv/Scripts/python scripts/scientific_ppt.py build examples/demo.json --output artifacts/demo --backend powerpoint --strict
+.venv/Scripts/python scripts/scientific_ppt.py build tests/fixtures/demo/demo.json --output artifacts/demo --backend powerpoint --strict
 .venv/Scripts/python scripts/verify_demo.py
 .venv/Scripts/python -m pip check
 ```

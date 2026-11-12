@@ -2,48 +2,93 @@
 
 [中文说明](README.md)
 
-An Agent Skill for reference-informed academic and technical PowerPoint authoring. The Agent reads evidence and plans the narrative; a modular Python engine validates JSON, measures content, chooses layouts, draws editable objects, paginates tables and checks actual slide renders.
+## What it is
 
-The default design language was derived from **448 slides across five reference decks**: 4:3 canvas, wine-red header, pale background and serif Chinese typography. No discipline-specific content is embedded in the engine.
+`scientific-ppt` is an Agent Skill for turning papers, documents, or topics into research and technical PowerPoint presentations. The agent reviews sources and plans the story. Python builds editable slides, paginates long content, and checks the rendered deck.
 
-## Setup and run
+## Preview
 
-Use Python 3.11+ and the repository-local virtual environment:
+**Codex used `scientific-ppt` to produce this 30-slide presentation on the Mamba architecture.** The deck shows how Codex applied the Skill to Drawlib diagrams, experimental charts, numbered equations, and editable tables with automatic pagination.
 
-```bash
-python -m venv .venv
-# Windows uses .venv/Scripts/python instead
-.venv/bin/python -m pip install -r requirements.lock
-.venv/bin/python scripts/scientific_ppt.py doctor
-.venv/bin/python scripts/scientific_ppt.py build examples/demo.json --output artifacts/my-demo --strict
-.venv/bin/python -m pytest
+[Download the PowerPoint source file](examples/mamba-architecture.pptx) · [Browse all 30 slide previews](examples/previews/)
+
+<table>
+  <tr>
+    <td><img src="examples/previews/slide-001.png" alt="1 Cover" width="240"></td>
+    <td><img src="examples/previews/slide-002.png" alt="2 Agenda" width="240"></td>
+    <td><img src="examples/previews/slide-003.png" alt="3 State and memory" width="240"></td>
+    <td><img src="examples/previews/slide-004.png" alt="4 Selective copying" width="240"></td>
+  </tr>
+  <tr>
+    <td><img src="examples/previews/slide-027.png" alt="27 Evaluation and deployment" width="240"></td>
+    <td><img src="examples/previews/slide-028.png" alt="28 Core mechanisms" width="240"></td>
+    <td><img src="examples/previews/slide-029.png" alt="29 References" width="240"></td>
+    <td><img src="examples/previews/slide-030.png" alt="30 Closing" width="240"></td>
+  </tr>
+</table>
+
+## Installation
+
+### Choose your agent and scope
+
+Install Git, Python 3.11+, and Codex, Claude Code, or DeepSeek Harness. Clone the entire repository into one of the directories below so that `SKILL.md` sits at the root of `scientific-ppt/`.
+
+| Agent | All projects for your user | Current project | Invoke |
+| --- | --- | --- | --- |
+| OpenAI Codex | `~/.agents/skills/scientific-ppt/` | `.agents/skills/scientific-ppt/` | `$scientific-ppt` |
+| Claude Code | `~/.claude/skills/scientific-ppt/` | `.claude/skills/scientific-ppt/` | `/scientific-ppt` |
+| DeepSeek Harness (DSH) | `~/.dsh/skills/scientific-ppt/` | `.dsh/skills/scientific-ppt/` | Ask the agent to use `scientific-ppt` |
+
+Project paths are relative to the target project's root. On Windows, `~` refers to `%USERPROFILE%`. [Codex documentation](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills) · [Claude Code documentation](https://code.claude.com/docs/en/skills)
+
+### Windows (PowerShell)
+
+Replace the repository URL. This example uses Codex user scope. Pass `.claude/skills` or `.dsh/skills` as the second `Join-Path` argument for Claude Code or DeepSeek Harness. For project scope, run from the target project root and set `$skillsDir` directly to the corresponding `skills` directory in the table.
+
+```powershell
+$skillsDir = Join-Path $env:USERPROFILE '.agents/skills'
+New-Item -ItemType Directory -Force -Path $skillsDir | Out-Null
+git clone '<repository URL>' (Join-Path $skillsDir 'scientific-ppt')
+Set-Location (Join-Path $skillsDir 'scientific-ppt')
+powershell -NoProfile -File scripts/bootstrap.ps1
 ```
 
-See [installation](references/installation.md) for optional dependencies. Drawlib is the default for computer science schematics. Choose specialist libraries by [figure type](references/figure_tools.md). The Skill generates editable PPTX files directly and uses PowerPoint or LibreOffice to render slide previews.
+### Linux (Bash)
 
-Copy the complete Skill source directory into your Agent's skills directory as `scientific-ppt`. Install the locked dependencies and run `scripts/scientific_ppt.py` directly. `SKILL.md` defines the Agent workflow, and `references/` contains the detailed specifications.
+This example uses Codex user scope. For Claude Code, use `$HOME/.claude/skills`. For DeepSeek Harness, use `$HOME/.dsh/skills`. For project scope, run from the target project root and use the relative path in the table.
 
-## Outputs
+```bash
+skills_dir="$HOME/.agents/skills"
+mkdir -p "$skills_dir"
+git clone '<repository URL>' "$skills_dir/scientific-ppt"
+cd "$skills_dir/scientific-ppt"
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.lock
+.venv/bin/python scripts/scientific_ppt.py doctor
+```
 
-- The demo command above generates a PPTX, PDF, slide previews, and a QA report in the local `artifacts/my-demo/` directory. Git ignores the entire `artifacts/` directory.
-- Native editable text, graph nodes, connectors, tables and bar/line charts with embedded workbooks.
-- Mixed aspect-ratio image layouts, EXIF orientation and bounded crop policies.
-- LaTeX matrices, sums, integrals, cases and scripts, retaining `.tex`, MathML, SVG and high-resolution PNG.
-- Lossless text pagination and table pagination with repeated headers, stable row IDs and contiguous group preservation.
-- Bounded repair loops, PowerPoint text measurements and explicit unverified status when no renderer is available.
+After initialization, return to your working project, invoke the Skill in your agent, and attach a paper, dataset, or content brief.
 
-All demo data are synthetic. `plan` converts an existing Markdown outline deterministically; semantic summarization, source research and topic expansion remain the Agent's responsibility.
+If DeepSeek Harness uses a custom `DSH_HOME`, place the user-scoped Skill under `skills/scientific-ppt/` in that directory. DSH also discovers project and user `.agents/skills/` directories, so it can reuse an existing Codex installation. After initialization, open the target project in Harness and ask it to use `scientific-ppt` with your input. [DeepSeek Harness Skill documentation](https://deepseek-harness.github.io/deepseek-harness/en/reference/subsystems/skills#local-discovery-priority)
 
-## Documentation
+## PowerPoint style · Classic academic lecture slides
 
-[Style evidence](references/style_guide.md) · [Architecture](references/architecture.md) · [Schema](references/deck.schema.json) · [Schema usage](references/schema_usage.md) · [Visual QA](references/visual_qa.md) · [Executed tests and limitations](references/test_report.md)
+- The default 4:3 layout uses burgundy title bars, SimHei headings, a pale background, and bold SimSun body text. Blue and burgundy highlight a few meaningful phrases.
+- Full decks include a cover, vertical agenda, separate references page, and closing slide. Figures have captions below, tables have captions above, and equation numbers align to the right.
+- Table headers and body cells are bold. Long tables paginate by logical group, fill the available height before the final page, and repeat the header. The final page uses natural row heights.
+- Architecture diagrams and flowcharts use white nodes with a consistent icon family. [Reference style guide](references/style_guide.md)
 
-Detailed reference specifications are currently in Chinese; commands, JSON and Python APIs are language-independent.
+## Notes
 
-## Limits and licensing
+- Actual previews require PowerPoint or LibreOffice. Without a renderer, the deck still exports and the report records `unverified`. End-to-end rendering has been verified on Windows with PowerPoint.
+- PowerPoint tables and native charts remain editable. Drawlib figures are inserted as single images, and equations retain their LaTeX sources.
+- Inspect the rendered pages, especially equations, arrow routes, and table continuations. Generated work stays in `artifacts/`. The repository tracks the selected showcase files in `examples/`. [Visual QA](references/visual_qa.md) · [Test results](references/test_report.md)
 
-Automated geometry checks cannot certify scientific accuracy or visual quality. Inspect every rendered page. Equations are inserted as images, not native Office equation objects; editable LaTeX/SVG sources are retained. Complex graph routing needs review. Oversized rows, overly narrow table columns and dense diagrams fail explicitly instead of losing data or endlessly shrinking text.
+## Skill rules
 
-Fonts are not bundled. Cross-platform substitutions can change appearance. Real integration testing in this repository uses Windows, Python 3.11 and PowerPoint 2013; LibreOffice support is separately documented and must not be described as tested unless exercised.
+- **Virtual environments.** Install the project dependencies inside `.venv/` using `requirements.lock`.
+- **Figure libraries.** Prefer Drawlib for computer science architecture diagrams, flowcharts, and pipelines. Use Matplotlib, a specialist library, or a native PowerPoint chart for data figures. The optional Drawlib environment uses `requirements-drawlib.lock`. [Figure tool selection](references/figure_tools.md)
+- **PowerPoint dependencies.** `python-pptx` builds the PPTX. PowerPoint or LibreOffice renders it. Use `doctor` to check fonts and renderers. [Installation and dependencies](references/installation.md)
+- **Workflow.** The agent plans slides in a shared JSON schema, then checks the rendered output. Reproducible test inputs are in `tests/fixtures/demo/`. [SKILL.md](SKILL.md) · [Slide schema](references/deck.schema.json)
 
-Code is [MIT licensed](LICENSE). Reference slides and third-party artwork are not relicensed. See [third-party notices](THIRD_PARTY_NOTICES.md). The virtual environment, reference conversion artifacts and temporary build attempts are ignored by Git. No GitHub upload is performed.
+The code is [MIT licensed](LICENSE). See [third-party notices](THIRD_PARTY_NOTICES.md) for other materials.

@@ -11,7 +11,7 @@ sys.path.insert(0,str(ROOT/'src'))
 
 
 def main():
-    out=ROOT/'examples';assets=out/'assets';assets.mkdir(parents=True,exist_ok=True)
+    out=ROOT/'tests'/'fixtures'/'demo';assets=out/'assets';assets.mkdir(parents=True,exist_ok=True)
     plt.rcParams.update({'font.family':'DejaVu Sans','font.size':12,'axes.spines.top':False,'axes.spines.right':False,'savefig.facecolor':'white'})
     rng=np.random.default_rng(42)
     x=np.linspace(0,24,120)

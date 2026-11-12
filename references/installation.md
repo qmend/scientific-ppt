@@ -43,4 +43,4 @@ python3 -m venv .venv
 
 用户输出指定在`--output`目录。每轮尝试在`attempt-N/`，最终PPTX、PDF、previews和qa_report在输出根目录；不要把旧attempt当作最终结果。参考转换保存在被忽略的`artifacts/reference-analysis/`。
 
-发布内容包括锁文件、pyproject、SKILL、src、scripts、references、tests 和 examples。`artifacts/` 是 Git 忽略的本地生成目录。源代码仓库无外部下载的字体、参考图片和教材副本。
+发布内容包括锁文件、pyproject、SKILL、src、scripts、references、tests 和 examples。`examples/` 存放 Mamba 展示成品及预览。`tests/fixtures/demo/` 存放可复现的合成测试输入。`artifacts/` 是 Git 忽略的本地生成目录。源代码仓库无外部下载的字体、参考图片和教材副本。
