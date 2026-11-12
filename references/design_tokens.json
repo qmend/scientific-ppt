@@ -1,0 +1,58 @@
+{
+  "version": "1.0",
+  "provenance": "448 reference slides; measured geometry plus documented adaptations in style_guide.md",
+  "canvas": {
+    "width": 720,
+    "height": 540
+  },
+  "colors": {
+    "background": "F7F7F7",
+    "primary": "A50021",
+    "text": "161616",
+    "blue": "0000CC",
+    "muted": "626262",
+    "line": "A0A0A0",
+    "cyan": "CCFFFF",
+    "green": "CCFFCC",
+    "yellow": "FFFFCC",
+    "white": "FFFFFF"
+  },
+  "fonts": {
+    "body": "SimSun",
+    "heading": "SimHei",
+    "latin": "Times New Roman",
+    "fallbacks": [
+      "Noto Serif CJK SC",
+      "Noto Sans CJK SC",
+      "Microsoft YaHei",
+      "DejaVu Sans"
+    ]
+  },
+  "type": {
+    "cover": 38,
+    "title": 32,
+    "body": 24,
+    "body_min": 20,
+    "table": 18,
+    "caption": 18,
+    "footer": 18,
+    "node": 18
+  },
+  "spacing": {
+    "margin": 24,
+    "header": 60,
+    "content_top": 78,
+    "footer": 30,
+    "gap": 16,
+    "line_height": 1.2,
+    "paragraph_after": 8,
+    "text_padding": 4
+  },
+  "quality": {
+    "max_repairs": 2,
+    "max_image_crop": 0.2,
+    "min_occupancy": 0.13,
+    "max_occupancy": 0.9,
+    "measurement_safety": 1.12
+  }
+}

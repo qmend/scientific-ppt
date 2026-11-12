@@ -1,14 +1,27 @@
+# Python environments, caches, and build output
 .venv/
+venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
 *.egg-info/
-build/
-dist/
-.cache/
-.tools/
-artifacts/reference-analysis/
-artifacts/*/attempt-*/
-artifacts/my-*/
+/build/
+/dist/
+/.cache/
+/.tools/
+
+# Local editors, OS files, and Office lock files
+/.idea/
+/.vscode/
+.DS_Store
+Thumbs.db
 *.tmp
 ~$*
+
+# Local generated artifacts
+/artifacts/

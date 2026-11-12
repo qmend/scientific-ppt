@@ -1,0 +1,4 @@
+interface:
+  display_name: "scientific-ppt"
+  short_description: "参考风格驱动的科研演示文稿规划、可编辑绘图、自动分页与视觉检查"
+  default_prompt: "使用 $scientific-ppt，根据我的研究材料制作可编辑的 PowerPoint，并渲染检查全部页面。"
