@@ -14,20 +14,20 @@
 
 <table>
   <tr>
-    <td><img src="examples/previews/slide-001.png" alt="1 Cover" width="50%"></td>
-    <td><img src="examples/previews/slide-002.png" alt="2 Agenda" width="50%"></td>
+    <td width="50%"><img src="examples/previews/slide-001.png" alt="1 Cover" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-002.png" alt="2 Agenda" width="100%"></td>
   </tr>
   <tr>
-    <td><img src="examples/previews/slide-003.png" alt="3 State and memory" width="50%"></td>
-    <td><img src="examples/previews/slide-004.png" alt="4 Selective copying" width="50%"></td>
+    <td width="50%"><img src="examples/previews/slide-003.png" alt="3 State and memory" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-004.png" alt="4 Selective copying" width="100%"></td>
   </tr>
   <tr>
-    <td><img src="examples/previews/slide-027.png" alt="27 Evaluation and deployment" width="50%"></td>
-    <td><img src="examples/previews/slide-028.png" alt="28 Core mechanisms" width="50%"></td>
+    <td width="50%"><img src="examples/previews/slide-027.png" alt="27 Evaluation and deployment" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-028.png" alt="28 Core mechanisms" width="100%"></td>
   </tr>
   <tr>
-    <td><img src="examples/previews/slide-029.png" alt="29 References" width="50%"></td>
-    <td><img src="examples/previews/slide-030.png" alt="30 Closing" width="50%"></td>
+    <td width="50%"><img src="examples/previews/slide-029.png" alt="29 References" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-030.png" alt="30 Closing" width="100%"></td>
   </tr>
 </table>
 

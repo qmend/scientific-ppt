@@ -14,20 +14,20 @@
 
 <table>
   <tr>
-    <td><img src="examples/previews/slide-001.png" alt="1 封面" width="50%"></td>
-    <td><img src="examples/previews/slide-002.png" alt="2 目录" width="50%"></td>
+    <td width="50%"><img src="examples/previews/slide-001.png" alt="1 封面" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-002.png" alt="2 目录" width="100%"></td>
   </tr>
   <tr>
-    <td><img src="examples/previews/slide-003.png" alt="3 长序列中的状态与记忆" width="50%"></td>
-    <td><img src="examples/previews/slide-004.png" alt="4 选择性复制任务" width="50%"></td>
+    <td width="50%"><img src="examples/previews/slide-003.png" alt="3 长序列中的状态与记忆" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-004.png" alt="4 选择性复制任务" width="100%"></td>
   </tr>
   <tr>
-    <td><img src="examples/previews/slide-027.png" alt="27 语言任务与部署评估" width="50%"></td>
-    <td><img src="examples/previews/slide-028.png" alt="28 三个核心机制" width="50%"></td>
+    <td width="50%"><img src="examples/previews/slide-027.png" alt="27 语言任务与部署评估" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-028.png" alt="28 三个核心机制" width="100%"></td>
   </tr>
   <tr>
-    <td><img src="examples/previews/slide-029.png" alt="29 参考文献" width="50%"></td>
-    <td><img src="examples/previews/slide-030.png" alt="30 结束页" width="50%"></td>
+    <td width="50%"><img src="examples/previews/slide-029.png" alt="29 参考文献" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-030.png" alt="30 结束页" width="100%"></td>
   </tr>
 </table>
 
