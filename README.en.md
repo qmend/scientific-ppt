@@ -63,12 +63,12 @@ Project paths are relative to the target project's root. On Windows, `~` refers 
 
 ### Windows (PowerShell)
 
-Replace the repository URL. This example uses Codex user scope. Pass `.claude/skills` or `.dsh/skills` as the second `Join-Path` argument for Claude Code or DeepSeek Harness. For project scope, run from the target project root and set `$skillsDir` directly to the corresponding `skills` directory in the table.
+This example uses Codex user scope. Pass `.claude/skills` or `.dsh/skills` as the second `Join-Path` argument for Claude Code or DeepSeek Harness. For project scope, run from the target project root and set `$skillsDir` directly to the corresponding `skills` directory in the table.
 
 ```powershell
 $skillsDir = Join-Path $env:USERPROFILE '.agents/skills'
 New-Item -ItemType Directory -Force -Path $skillsDir | Out-Null
-git clone '<repository URL>' (Join-Path $skillsDir 'scientific-ppt')
+git clone 'https://github.com/qmend/scientific-ppt.git' (Join-Path $skillsDir 'scientific-ppt')
 Set-Location (Join-Path $skillsDir 'scientific-ppt')
 powershell -NoProfile -File scripts/bootstrap.ps1
 ```
@@ -80,7 +80,7 @@ This example uses Codex user scope. For Claude Code, use `$HOME/.claude/skills`.
 ```bash
 skills_dir="$HOME/.agents/skills"
 mkdir -p "$skills_dir"
-git clone '<repository URL>' "$skills_dir/scientific-ppt"
+git clone 'https://github.com/qmend/scientific-ppt.git' "$skills_dir/scientific-ppt"
 cd "$skills_dir/scientific-ppt"
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.lock

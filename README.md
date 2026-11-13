@@ -63,12 +63,12 @@
 
 ### Windows（PowerShell）
 
-将仓库 URL 换成实际地址。以下以 Codex 用户级安装为例。Claude Code 用 `.claude/skills`，DeepSeek Harness 用 `.dsh/skills`，均作为 `Join-Path` 的第二个参数。项目专属安装时，在目标项目根目录运行，直接将 `$skillsDir` 设为上表对应的 `skills` 目录。
+以下以 Codex 用户级安装为例。Claude Code 用 `.claude/skills`，DeepSeek Harness 用 `.dsh/skills`，均作为 `Join-Path` 的第二个参数。项目专属安装时，在目标项目根目录运行，直接将 `$skillsDir` 设为上表对应的 `skills` 目录。
 
 ```powershell
 $skillsDir = Join-Path $env:USERPROFILE '.agents/skills'
 New-Item -ItemType Directory -Force -Path $skillsDir | Out-Null
-git clone '<仓库 URL>' (Join-Path $skillsDir 'scientific-ppt')
+git clone 'https://github.com/qmend/scientific-ppt.git' (Join-Path $skillsDir 'scientific-ppt')
 Set-Location (Join-Path $skillsDir 'scientific-ppt')
 powershell -NoProfile -File scripts/bootstrap.ps1
 ```
@@ -80,7 +80,7 @@ powershell -NoProfile -File scripts/bootstrap.ps1
 ```bash
 skills_dir="$HOME/.agents/skills"
 mkdir -p "$skills_dir"
-git clone '<仓库 URL>' "$skills_dir/scientific-ppt"
+git clone 'https://github.com/qmend/scientific-ppt.git' "$skills_dir/scientific-ppt"
 cd "$skills_dir/scientific-ppt"
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.lock
