@@ -93,7 +93,7 @@ DeepSeek Harness 使用自定义 `DSH_HOME` 时，将用户级 Skill 放在该�
 
 ## PPT 风格 · 经典学术课件风格
 
-- 默认 4:3，酒红标题带、黑体标题、浅色背景、加粗宋体正文。蓝色和酒红色只用于少量有意义的关键词组。
+- 内置 4:3 PowerPoint 母版，为封面、正文和结束页统一浅色背景、酒红标题带与封尾细线。标题用黑体，正文用加粗宋体。蓝色和酒红色只用于少量有意义的关键词组。 [下载母版](assets/template.pptx)
 - 常规汇报包含封面、竖排目录、独立参考文献页和结束页。图题在图下，表题在表上，公式编号靠右。
 - 表头和数据单元格统一加粗。长表按逻辑分组分页，非末页占满正文区，续页重复表头，末页保留自然行高。
 - 架构图和流程图使用白底节点，并为每个节点配同风格图标。 [参考风格分析](references/style_guide.md)
@@ -109,6 +109,14 @@ DeepSeek Harness 使用自定义 `DSH_HOME` 时，将用户级 Skill 放在该�
 - **虚拟环境**。项目的 Python 依赖安装在 `.venv/`，由 `requirements.lock` 锁定。
 - **绘图库**。计算机架构图、流程图和 Pipeline 优先使用 Drawlib。数据图用 Matplotlib、领域绘图库或可编辑的 PowerPoint 原生图表。Drawlib 用 `requirements-drawlib.lock` 安装到独立环境。 [绘图选库](references/figure_tools.md)
 - **PPT 依赖**。`python-pptx` 生成 PPTX，PowerPoint 或 LibreOffice 负责实际渲染。字体与渲染器由 `doctor` 检测。 [安装与依赖](references/installation.md)
-- **执行流程**。Agent 按统一 JSON Schema 规划内容，生成 PPTX 后逐页检查。可复现的测试输入在 `tests/fixtures/demo/`。 [SKILL.md](SKILL.md) · [页面 Schema](references/deck.schema.json)
+- **执行流程**。Agent 按统一 JSON Schema 规划内容。生成器自动加载母版，按内容计算图文布局和分页，再逐页检查渲染结果。自定义画幅、背景色、主色或基础标题带高度时，生成器按指定参数绘制这些元素。可复现的测试输入在 `tests/fixtures/demo/`。 [SKILL.md](SKILL.md) · [页面 Schema](references/deck.schema.json)
 
 代码采用 [MIT 许可证](LICENSE)。第三方内容见 [许可与第三方说明](THIRD_PARTY_NOTICES.md)。
+
+## 更新日志
+
+### 2026-11-13
+
+- 加入 4:3 PowerPoint 母版，生成时自动应用封面、正文和结束页版式。
+- 保留自定义设计参数支持，长标题仍可按需扩展标题带高度。
+- 更新 Windows 和 Linux 安装示例，克隆命令已填入实际仓库地址。

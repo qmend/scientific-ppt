@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import re
 from pptx import Presentation
+from pptx.exc import PackageNotFoundError
 from pptx.util import Pt
 from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE
@@ -13,6 +14,45 @@ from .tables import TABLE_CAPTION_HEIGHT
 from .layout import content_box
 from .typography import resolve_font, width as text_width
 from .images import fit_image
+
+
+TEMPLATE_PATH = Path(__file__).resolve().parents[2] / 'assets' / 'template.pptx'
+TEMPLATE_LAYOUTS = {
+    'cover': 'Scientific PPT Cover',
+    'content': 'Scientific PPT Content',
+    'end': 'Scientific PPT Closing',
+}
+
+
+def load_presentation(tokens):
+    """Use the bundled master when the requested canvas and chrome match it."""
+    try:
+        prs = Presentation(TEMPLATE_PATH)
+    except PackageNotFoundError as exc:
+        raise ValueError(f'Cannot load bundled PowerPoint template: {TEMPLATE_PATH}') from exc
+    if len(prs.slides):
+        raise ValueError('The bundled PowerPoint template must contain layouts only')
+    by_name = {layout.name: layout for layout in prs.slide_layouts}
+    layouts = {key: by_name.get(name) for key, name in TEMPLATE_LAYOUTS.items()}
+    if any(layout is None for layout in layouts.values()):
+        raise ValueError('The bundled PowerPoint template is missing a required layout')
+    band = next((shape for shape in layouts['content'].shapes if shape.name == 'Title band'), None)
+    if band is None:
+        raise ValueError('The bundled PowerPoint template is missing its title band')
+
+    canvas, colors = tokens['canvas'], tokens['colors']
+    if (
+        (prs.slide_width, prs.slide_height) == (Pt(canvas['width']), Pt(canvas['height']))
+        and str(prs.slide_master.background.fill.fore_color.rgb) == colors['background'].upper()
+        and str(band.fill.fore_color.rgb) == colors['primary'].upper()
+        and band.height == Pt(tokens['spacing']['header'])
+    ):
+        return prs, layouts
+
+    prs = Presentation()
+    prs.slide_width, prs.slide_height = Pt(canvas['width']), Pt(canvas['height'])
+    blank = prs.slide_layouts.get_by_name('Blank')
+    return prs, dict.fromkeys(TEMPLATE_LAYOUTS, blank)
 
 
 def color(hex_color):return RGBColor.from_string(hex_color)
@@ -70,20 +110,28 @@ def text_box(slide,text,box,size,tokens,**kwargs):
 
 
 def write_pptx(deck,pages,tokens,output):
-    prs=Presentation();prs.slide_width=Pt(tokens['canvas']['width']);prs.slide_height=Pt(tokens['canvas']['height'])
+    prs,layouts=load_presentation(tokens)
+    uses_template=layouts['content'].name==TEMPLATE_LAYOUTS['content']
     prs.core_properties.title=deck['title'];prs.core_properties.author=deck.get('author','')
     warnings=[];manifest=[]
     w,h=tokens['canvas']['width'],tokens['canvas']['height'];colors=tokens['colors']
     for index,page in enumerate(pages,1):
-        slide=prs.slides.add_slide(prs.slide_layouts[6])
-        slide.background.fill.solid();slide.background.fill.fore_color.rgb=color(colors['background'])
+        layout=page.layout if page.layout in ('cover','end') else 'content'
+        slide=prs.slides.add_slide(layouts[layout])
+        if not uses_template:
+            slide.background.fill.solid();slide.background.fill.fore_color.rgb=color(colors['background'])
         _,header=content_box(page.title,tokens)
-        if page.layout not in ('cover','end'):
-            rectangle(slide,Box(0,0,w,header),colors['primary'])
+        if layout=='content':
+            if not uses_template:
+                rectangle(slide,Box(0,0,w,header),colors['primary'])
+            elif header>tokens['spacing']['header']:
+                top=tokens['spacing']['header']
+                rectangle(slide,Box(0,top,w,header-top),colors['primary']).name='Title band extension'
             text_box(slide,page.title,Box(24,8,w-48,header-12),tokens['type']['title'],tokens,fill=colors['white'],padding=0,family=tokens['fonts']['heading'])
         else:
             text_box(slide,deck.get('english_title','SCIENTIFIC PRESENTATION'),Box(36,25,w-72,24),16,tokens,fill=colors['primary'],padding=0,align=PP_ALIGN.CENTER)
-            rectangle(slide,Box(36,47,w-72,1.5),colors['primary']).name='English header rule'
+            if not uses_template:
+                rectangle(slide,Box(36,47,w-72,1.5),colors['primary']).name='English header rule'
         if 1<index<len(pages) and page.layout not in ('cover','end'):
             text_box(slide,str(index),Box(w-64,h-30,40,28),tokens['type']['footer'],tokens,fill=colors['primary'],align=PP_ALIGN.RIGHT,padding=0)
         if page.continuation>1 and page.layout!='table':

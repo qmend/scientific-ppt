@@ -93,7 +93,7 @@ If DeepSeek Harness uses a custom `DSH_HOME`, place the user-scoped Skill under 
 
 ## PowerPoint style · Classic academic lecture slides
 
-- The default 4:3 layout uses burgundy title bars, SimHei headings, a pale background, and bold SimSun body text. Blue and burgundy highlight a few meaningful phrases.
+- The bundled 4:3 PowerPoint master provides cover, content, and closing layouts with a pale background, burgundy title bands, and thin rules on the cover and closing slides. Headings use SimHei and body text uses bold SimSun. Blue and burgundy highlight a few meaningful phrases. [Download the master](assets/template.pptx)
 - Full decks include a cover, vertical agenda, separate references page, and closing slide. Figures have captions below, tables have captions above, and equation numbers align to the right.
 - Table headers and body cells are bold. Long tables paginate by logical group, fill the available height before the final page, and repeat the header. The final page uses natural row heights.
 - Architecture diagrams and flowcharts use white nodes with a consistent icon family. [Reference style guide](references/style_guide.md)
@@ -109,6 +109,14 @@ If DeepSeek Harness uses a custom `DSH_HOME`, place the user-scoped Skill under 
 - **Virtual environments.** Install the project dependencies inside `.venv/` using `requirements.lock`.
 - **Figure libraries.** Prefer Drawlib for computer science architecture diagrams, flowcharts, and pipelines. Use Matplotlib, a specialist library, or a native PowerPoint chart for data figures. The optional Drawlib environment uses `requirements-drawlib.lock`. [Figure tool selection](references/figure_tools.md)
 - **PowerPoint dependencies.** `python-pptx` builds the PPTX. PowerPoint or LibreOffice renders it. Use `doctor` to check fonts and renderers. [Installation and dependencies](references/installation.md)
-- **Workflow.** The agent plans slides in a shared JSON schema, then checks the rendered output. Reproducible test inputs are in `tests/fixtures/demo/`. [SKILL.md](SKILL.md) · [Slide schema](references/deck.schema.json)
+- **Workflow.** The agent plans slides in a shared JSON schema. The builder loads the master automatically and lays out and paginates content before the agent reviews the rendered slides. When tokens specify a custom canvas, background, primary color, or base title-band height, the builder draws these elements using those values. Reproducible test inputs are in `tests/fixtures/demo/`. [SKILL.md](SKILL.md) · [Slide schema](references/deck.schema.json)
 
 The code is [MIT licensed](LICENSE). See [third-party notices](THIRD_PARTY_NOTICES.md) for other materials.
+
+## Changelog
+
+### 2026-11-13
+
+- Added a 4:3 PowerPoint master and automatic selection of its cover, content, and closing layouts.
+- Kept support for custom design tokens and title bands that expand to fit longer headings.
+- Updated the Windows and Linux install examples with the repository clone URL.

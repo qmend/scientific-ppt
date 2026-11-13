@@ -1,10 +1,50 @@
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 from pytest import approx
-from scientific_ppt.models import load_tokens
+from scientific_ppt.models import Page, load_tokens
 from scientific_ppt.planner import plan
 from scientific_ppt.pptx_writer import write_pptx
 from scientific_ppt.tables import paginate_table
+
+
+def test_generated_slides_inherit_template_layouts(tmp_path):
+    tokens = load_tokens()
+    pages = [
+        Page('Cover', layout='cover'),
+        Page('Short heading'),
+        Page('A long research heading ' * 4),
+        Page('Closing', layout='end'),
+    ]
+    output = tmp_path / 'master.pptx'
+    write_pptx({'title': 'Master test'}, pages, tokens, output)
+    deck = Presentation(output)
+    assert [slide.slide_layout.name for slide in deck.slides] == [
+        'Scientific PPT Cover', 'Scientific PPT Content',
+        'Scientific PPT Content', 'Scientific PPT Closing',
+    ]
+    assert str(deck.slide_master.background.fill.fore_color.rgb) == tokens['colors']['background']
+    assert [shape.name for shape in deck.slides[1].slide_layout.shapes] == ['Title band']
+    assert all(shape.name != 'Title band extension' for shape in deck.slides[1].shapes)
+    assert any(shape.name == 'Title band extension' for shape in deck.slides[2].shapes)
+    for i in (0, 3):
+        assert [shape.name for shape in deck.slides[i].slide_layout.shapes] == ['English header rule']
+        assert all(shape.name != 'English header rule' for shape in deck.slides[i].shapes)
+
+
+def test_custom_canvas_and_colors_keep_token_driven_chrome(tmp_path):
+    tokens = load_tokens()
+    tokens['canvas']['width'] = 960
+    tokens['colors'].update(primary='004477', background='FFFFFF')
+    output = tmp_path / 'custom.pptx'
+    write_pptx({'title': 'Custom theme'}, [Page('Content')], tokens, output)
+    deck = Presentation(output)
+    slide = deck.slides[0]
+    band = slide.shapes[0]
+    assert deck.slide_width.pt == 960
+    assert slide.slide_layout.name == 'Blank'
+    assert str(slide.background.fill.fore_color.rgb) == 'FFFFFF'
+    assert str(band.fill.fore_color.rgb) == '004477'
+    assert band.width == deck.slide_width
 
 
 def test_continued_table_fills_nonfinal_pages_and_preserves_topic_boundary():
