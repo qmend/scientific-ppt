@@ -8,42 +8,42 @@
 
 ## 效果图
 
-下面是 **Codex 调用 `scientific-ppt` 制作的 30 页 Mamba 架构汇报**。这份成品展示 Codex 在该 Skill 下的实际表现，包含 Drawlib 架构图、实验图表、编号公式和自动分页的原生表格。
+下面是 **Codex 使用 `scientific-ppt` 制作的 16 页汇报《微服务重试风暴：尾延迟如何演变为过载》**。原创 Drawlib 图展示共享队列、重叠执行和多层重试，另有编号公式、可编辑表格，以及每种策略 30 次离散事件模拟的结果图。
 
-[下载 PowerPoint 源文件](examples/mamba-architecture.pptx) · [查看全部 30 页预览](examples/previews/)
+[下载 PowerPoint 源文件](examples/retry-storm.pptx) · [查看全部 16 页预览](examples/previews/)
 
 <table>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-001.png" alt="1 封面" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-001.png" alt="1 微服务重试风暴" width="100%"></td>
     <td width="50%"><img src="examples/previews/slide-002.png" alt="2 目录" width="100%"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-003.png" alt="3 长序列中的状态与记忆" width="100%"></td>
-    <td width="50%"><img src="examples/previews/slide-004.png" alt="4 选择性复制任务" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-003.png" alt="3 一次超时可以留下两份工作" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-004.png" alt="4 超时与重试形成过载反馈" width="100%"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-007.png" alt="7 固定参数时的卷积形式" width="100%"></td>
-    <td width="50%"><img src="examples/previews/slide-008.png" alt="8 输入依赖的选择性状态更新" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-005.png" alt="5 一次逻辑请求的两次执行" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-006.png" alt="6 重试属主决定调用放大上限" width="100%"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-010.png" alt="10 Mamba 块的数据流" width="100%"></td>
-    <td width="50%"><img src="examples/previews/slide-011.png" alt="11 张量形状表首页" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-007.png" alt="7 调用次数与负载放大" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-008.png" alt="8 重试发出前的三个控制点" width="100%"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-012.png" alt="12 张量形状表续页" width="100%"></td>
-    <td width="50%"><img src="examples/previews/slide-013.png" alt="13 张量形状表末页" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-009.png" alt="9 离散事件模拟的共同条件" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-010.png" alt="10 三种策略的重试开关" width="100%"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-020.png" alt="20 选择性复制的对照结果" width="100%"></td>
-    <td width="50%"><img src="examples/previews/slide-024.png" alt="24 如何解读归纳头任务" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-011.png" alt="11 恢复处理速度后，积压仍可能增长" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-012.png" alt="12 持续过载下，不重试的按期成功率最高" width="100%"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-025.png" alt="25 选择参数的语言模型消融" width="100%"></td>
-    <td width="50%"><img src="examples/previews/slide-026.png" alt="26 训练显存随批大小的变化" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-013.png" alt="13 预算限制额外负载，恢复还取决于积压" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-014.png" alt="14 故障排查中的三组信号" width="100%"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-029.png" alt="29 参考文献" width="100%"></td>
-    <td width="50%"><img src="examples/previews/slide-030.png" alt="30 结束页" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-015.png" alt="15 参考资料" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-016.png" alt="16 结束页" width="100%"></td>
   </tr>
 </table>
 
@@ -96,7 +96,7 @@ DeepSeek Harness 使用自定义 `DSH_HOME` 时，将用户级 Skill 放在该�
 - 内置 4:3 PowerPoint 母版，为封面、正文和结束页统一浅色背景、酒红标题带与封尾细线。标题用黑体，正文用加粗宋体。蓝色和酒红色只用于少量有意义的关键词组。 [下载母版](assets/template.pptx)
 - 常规汇报包含封面、竖排目录、独立参考文献页和结束页。图题在图下，表题在表上，公式编号靠右。
 - 表头和数据单元格统一加粗。长表按逻辑分组分页，非末页占满正文区，续页重复表头，末页保留自然行高。
-- 架构图和流程图使用白底节点，并为每个节点配同风格图标。 [参考风格分析](references/style_guide.md)
+- 科研图先对齐分支、标签和端口。时间轴用长图，分层关系可用紧凑构图。独页长图和图注在正文区内整体上下居中。同一服务或数据在不同子图中可复用图标。 [科研图设计](references/figure_tools.md#先对齐再定图幅)
 
 ## 注意事项
 
@@ -115,8 +115,14 @@ DeepSeek Harness 使用自定义 `DSH_HOME` 时，将用户级 Skill 放在该�
 
 ## 更新日志
 
+### 2026-11-14
+
+- 更新展示成品为 16 页《微服务重试风暴》，附 PowerPoint 实际渲染的逐页预览。
+- 补充固定首尾页、出处写入演讲者备注，以及科研图对齐与图幅选择规则。
+
 ### 2026-11-13
 
 - 加入 4:3 PowerPoint 母版，生成时自动应用封面、正文和结束页版式。
 - 保留自定义设计参数支持，长标题仍可按需扩展标题带高度。
 - 更新 Windows 和 Linux 安装示例，克隆命令已填入实际仓库地址。
+- 更新科研图工作流，复杂方法优先绘制分区、数据形态和反馈路径，操作步骤使用标准流程图。

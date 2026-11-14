@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "title": "演示文稿题目",
+  "english_title": "PRESENTATION / RESEARCH FIELD",
+  "language": "zh-CN",
+  "slides": [
+    {
+      "title": "首页",
+      "layout": "cover",
+      "blocks": [
+        {"type":"text","text":"演示文稿题目","box":[24,150,672,80],"font_size":46,"heading":true,"bold":true,"align":"center"},
+        {"type":"text","text":"研究对象与汇报范围","box":[24,239,672,56],"font_size":29,"heading":true,"bold":true,"align":"center"},
+        {"type":"table","columns":["项目","信息"],"hide_header":true,"style":"borderless","widths":[0.49,0.51],"box":[246,330,228,127],
+         "rows":[{"id":"presenter","cells":["汇报人","xxx"]},{"id":"supervisor","cells":["指导教师","xxx"]},{"id":"date","cells":["日期","xxx"]}]}
+      ]
+    },
+    {
+      "title": "结束页",
+      "layout": "end",
+      "blocks": [
+        {"type":"text","text":"THE END","box":[24,174,672,100],"font_size":56,"heading":true,"bold":true,"align":"center"},
+        {"type":"text","text":"敬请指正","box":[24,290,672,71],"font_size":34,"heading":true,"bold":true,"align":"center"}
+      ]
+    }
+  ]
+}

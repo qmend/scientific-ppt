@@ -17,6 +17,9 @@
     "yellow": "FFFFCC",
     "white": "FFFFFF"
   },
+  "charts": {
+    "palette": ["7289AB", "8DC1A9", "E69D87", "EEDD78", "DD6B66", "73B9BC"]
+  },
   "fonts": {
     "body": "SimSun",
     "heading": "SimHei",

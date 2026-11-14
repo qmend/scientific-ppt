@@ -70,7 +70,7 @@ class FigureCanvas:
         return region
 
     def box(self, x, y, w, h, label="", *, fill=WHITE, stroke=LINE, size=18, color=INK,
-            radius=8, bold=True, layer="front", dashed=False):
+            radius=8, bold=False, layer="front", dashed=False):
         shape = self._region(x, y, w, h)
         dash = ' stroke-dasharray="7 5"' if dashed else ""
         self.svg_layers[layer].append(
@@ -84,7 +84,7 @@ class FigureCanvas:
 
     def panel(self, x, y, w, h, label, *, fill=WHITE, color=INK, dashed=False):
         region = self.box(x, y, w, h, fill=fill, layer="back", radius=12, dashed=dashed)
-        self.text(x+16, y+9, w-32, 24, label, size=18, bold=True, color=color)
+        self.text(x+16, y+9, w-32, 24, label, size=18, bold=False, color=color)
         return region
 
     def image(self, x, y, w, h, png, label=None):

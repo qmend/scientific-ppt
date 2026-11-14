@@ -8,9 +8,9 @@
 
 ## Preview
 
-**Codex used `scientific-ppt` to produce this 30-slide presentation on the Mamba architecture.** The deck shows how Codex applied the Skill to Drawlib diagrams, experimental charts, numbered equations, and editable tables with automatic pagination.
+**Codex used `scientific-ppt` to create this 16-slide briefing on retry storms in microservices.** The original Drawlib diagrams explain shared capacity, overlapping attempts, and retries across service boundaries. The deck includes numbered equations, editable tables, and charts from a discrete-event simulation with 30 runs per policy.
 
-[Download the PowerPoint source file](examples/mamba-architecture.pptx) · [Browse all 30 slide previews](examples/previews/)
+[Download the PowerPoint](examples/retry-storm.pptx) · [Browse all 16 slide previews](examples/previews/)
 
 <table>
   <tr>
@@ -18,32 +18,32 @@
     <td width="50%"><img src="examples/previews/slide-002.png" alt="2 Agenda" width="100%"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-003.png" alt="3 State and memory" width="100%"></td>
-    <td width="50%"><img src="examples/previews/slide-004.png" alt="4 Selective copying" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-003.png" alt="3 How one timeout leaves two attempts" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-004.png" alt="4 Overload feedback and shared capacity" width="100%"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-007.png" alt="7 Convolution with fixed parameters" width="100%"></td>
-    <td width="50%"><img src="examples/previews/slide-008.png" alt="8 Input-dependent selective state updates" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-005.png" alt="5 Two attempts on a common timeline" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-006.png" alt="6 Retry ownership across layers" width="100%"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-010.png" alt="10 Data flow in a Mamba block" width="100%"></td>
-    <td width="50%"><img src="examples/previews/slide-011.png" alt="11 Tensor shapes table" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-007.png" alt="7 Attempt amplification" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-008.png" alt="8 Deadline, jitter, and retry budget" width="100%"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-012.png" alt="12 Tensor shapes table continued" width="100%"></td>
-    <td width="50%"><img src="examples/previews/slide-013.png" alt="13 Tensor shapes table final page" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-009.png" alt="9 Simulation conditions" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-010.png" alt="10 Retry policy comparison" width="100%"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-020.png" alt="20 Selective copying results" width="100%"></td>
-    <td width="50%"><img src="examples/previews/slide-024.png" alt="24 Interpreting the induction task" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-011.png" alt="11 Backend load and queue length" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-012.png" alt="12 Success rates and amplification" width="100%"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-025.png" alt="25 Language-model ablation" width="100%"></td>
-    <td width="50%"><img src="examples/previews/slide-026.png" alt="26 Training memory by batch size" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-013.png" alt="13 Backlog and recovery" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-014.png" alt="14 Incident investigation" width="100%"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="examples/previews/slide-029.png" alt="29 References" width="100%"></td>
-    <td width="50%"><img src="examples/previews/slide-030.png" alt="30 Closing" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-015.png" alt="15 References" width="100%"></td>
+    <td width="50%"><img src="examples/previews/slide-016.png" alt="16 Closing" width="100%"></td>
   </tr>
 </table>
 
@@ -96,7 +96,7 @@ If DeepSeek Harness uses a custom `DSH_HOME`, place the user-scoped Skill under 
 - The bundled 4:3 PowerPoint master provides cover, content, and closing layouts with a pale background, burgundy title bands, and thin rules on the cover and closing slides. Headings use SimHei and body text uses bold SimSun. Blue and burgundy highlight a few meaningful phrases. [Download the master](assets/template.pptx)
 - Full decks include a cover, vertical agenda, separate references page, and closing slide. Figures have captions below, tables have captions above, and equation numbers align to the right.
 - Table headers and body cells are bold. Long tables paginate by logical group, fill the available height before the final page, and repeat the header. The final page uses natural row heights.
-- Architecture diagrams and flowcharts use white nodes with a consistent icon family. [Reference style guide](references/style_guide.md)
+- Research figures align comparable branches, labels, and ports. Use a wide layout for timelines and a compact layout for layered relationships. On a standalone wide-figure slide, center the figure and caption together vertically. Reuse icons to identify the same service or data across panels. [Figure design guide](references/figure_tools.md)
 
 ## Notes
 
@@ -115,8 +115,14 @@ The code is [MIT licensed](LICENSE). See [third-party notices](THIRD_PARTY_NOTIC
 
 ## Changelog
 
+### 2026-11-14
+
+- Replaced the showcase with the 16-slide Retry Storm briefing and its PowerPoint-rendered previews.
+- Documented stable cover and closing layouts, speaker-note attribution, and figure alignment and aspect-ratio rules.
+
 ### 2026-11-13
 
 - Added a 4:3 PowerPoint master and automatic selection of its cover, content, and closing layouts.
 - Kept support for custom design tokens and title bands that expand to fit longer headings.
 - Updated the Windows and Linux install examples with the repository clone URL.
+- Updated the figure workflow to show complex methods through stages, data representations, and feedback paths, with standard flowcharts for procedures.

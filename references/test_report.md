@@ -4,6 +4,10 @@
 
 ## 已执行
 
+2026-11-14 提交前复核。本机独立环境执行 pytest，29 项通过，有 1 条 Ziamath 上游弃用警告。主环境与可选 Drawlib 环境的 `pip check` 均通过，Skill 元数据验证通过。
+
+当前 README 展示成品为 16 页 [《微服务重试风暴》](../examples/retry-storm.pptx)。已核对成品与最终构建文件的 SHA-256 一致，预览为同版 PPTX 经 PowerPoint 实际渲染的 [16 页 PNG](../examples/previews/)。渲染报告无文字溢出，实验数据来自每种策略 30 次离散事件模拟。
+
 2026-11-12 提交前复核。在不含原有 `artifacts/`、`material/` 和缓存的源码副本中，复用本机锁定环境执行 pytest，27 项通过。主环境与 Drawlib 环境的已启用版本均匹配各自锁文件，`pip check` 通过。
 
 README 示例通过 PowerPoint 严格构建，实际渲染 19 页。完整性脚本核对了 45 行表格、正文、LaTeX、原生图表及预览页数。Transformer 脚本在源码副本中独立生成因果掩码并通过 17 页严格渲染。Drawlib 架构示例和四张 SVG/PNG 科研图示例均成功生成。

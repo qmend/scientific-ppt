@@ -25,7 +25,7 @@ JSON Schema是输入合同。所有距离为pt，设计token默认720×540pt。�
 | diagram | nodes, edges | direction(LR/TB), caption |
 | chart | kind(bar/line), categories, series | y_title, caption |
 
-全部块可以设置`id`、`source`。图片路径相对于**输入JSON目录**。表格行格式：`{"id":"R1","cells":["A","1.20"],"group":"G1"}`。无行ID、重复ID或列数不符均拒绝。
+全部块可以设置`id`、`source`。所有页面的来源和章节/页码定位统一写入块的 `source` 或页面 `notes`，二者均导出到 PowerPoint 演讲者备注；不要将其另建为可见的底部 `text` 块。图题、表题、公式编号、页码及独立参考文献页正常保留。图片路径相对于**输入JSON目录**。表格行格式：`{"id":"R1","cells":["A","1.20"],"group":"G1"}`。无行ID、重复ID或列数不符均拒绝。
 
 图节点：`{"id":"a","label":"Acquisition","kind":"process","color":"cyan"}`。形状还有decision/terminal/data/neuron；颜色还有green/yellow/white。边：`{"from":"a","to":"b","label":"yes","feedback":false}`。需要指定位置时，所有节点使用`position:[0..1,0..1]`，坐标以可用图区域归一化。自动DAG布局不从文字猜测关系。
 
@@ -41,9 +41,15 @@ JSON Schema是输入合同。所有距离为pt，设计token默认720×540pt。�
 
 首页信息表使用 `hide_header: true, style: "borderless"`，仍需 `columns` 定义列数。单元格透明且无框线，首列右对齐，值列左对齐。用较窄的 `box` 将表格置于页面水平中心。`english_title` 是整套演示的英文题目，用于首页与结束页的细线页眉。
 
+默认首尾页直接复用 [bookends.json](../assets/bookends.json)，具体字体、坐标和替换范围见[首尾页规范](bookends.md)。首页三行标签固定为汇报人、指导教师、日期；尾页为 THE END 和敬请指正。
+
 内容页的正文、分点和提示框默认加粗。文献条目等需用常规字重的文本块可设 `bold: false`。需要定位重点时，可用 `==蓝字==` 或 `@@酒红字@@` 标注少量关键词组。数字、单独字母和符号使用正文色。颜色取自设计参数的 `blue` 和 `primary`。兼容 `**加粗**` 和 `__下划线__`（标记不嵌套）。`first_line_indent: 2` 表示首行缩进两字号宽，`paragraph_space: 18` 表示段后18pt。换行分隔段落。项目列表用 `bullet: {"symbol":"□","color":"A50021"}`，支持 ●、○、■、□，不要同时写文字项目符号。
 
 浅色框例子：`panel: "gradient", gradient: {"colors":["FFFFFF","DDF0DE"],"kind":"radial","focus":[0.25,0.3]}`。线性渐变使用 `kind: "linear", angle: 135`，放射中心取0至1的相对坐标。优先用于正文分组，标题和大部分正文仍可无框。
+
+单页关键词强调色只能选一种：使用 `==蓝字==` 的页不再使用 `@@酒红字@@`，反之亦然；同页文本块的 `emphasis: blue|primary` 和图件中的强调词也遵循这一选择。颜色用于图表分类、数据系列或固定模板元素时不受此限制。该约束由 Agent 规划与逐页审阅执行，当前 Schema 不会自动识别所有可见强调色。
+
+“项目小标题 + 解释”式列表，给小标题块设置 `bullet`；解释块不设 `bullet`，并与小标题的文字起点对齐。当前原生符号使用字号1.2倍的左缩进，例如24pt小标题框从x=24开始时，解释框可从x=52.8开始，并相应减少宽度。为增加缩进后的换行预留高度，检查实际 Office 渲染；不要将符号直接拼入文本。
 
 图表可设 `palette: ["237DB5","239B73","E8B52B"]`；单系列柱形图设置 `vary_categories: true` 按类别着色。颜色需要有辨识度，浅色背景与数据颜色分别选择。
 

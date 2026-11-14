@@ -13,7 +13,7 @@ def draw_chart(slide,block,box,tokens):
     chart.has_title=False
     chart.has_legend=len(block['series'])>1
     if chart.has_legend:
-        chart.legend.position=XL_LEGEND_POSITION.BOTTOM;chart.legend.font.size=Pt(14);chart.legend.include_in_layout=False
+        chart.legend.position=XL_LEGEND_POSITION.BOTTOM;chart.legend.font.size=Pt(14);chart.legend.include_in_layout=True
     for axis in (chart.category_axis,chart.value_axis):
         axis.tick_labels.font.size=Pt(14);axis.tick_labels.font.name=tokens['fonts']['body'];axis.major_tick_mark=XL_TICK_MARK.NONE
     chart.value_axis.has_major_gridlines=True
@@ -22,7 +22,7 @@ def draw_chart(slide,block,box,tokens):
     if block.get('y_title'):
         chart.value_axis.has_title=True;chart.value_axis.axis_title.text_frame.text=block['y_title']
         for p in chart.value_axis.axis_title.text_frame.paragraphs:p.font.size=Pt(14)
-    palette=block.get('palette',['237DB5','239B73','E8B52B','A50021'])
+    palette=block.get('palette') or tokens.get('charts',{}).get('palette') or ['7289AB','8DC1A9','E69D87','EEDD78','DD6B66','73B9BC']
     for i,series in enumerate(chart.series):
         c=color(palette[i%len(palette)])
         series.format.fill.solid();series.format.fill.fore_color.rgb=c
